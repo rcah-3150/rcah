@@ -10,6 +10,56 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+        /* Calendar container */
+        .calendar {
+            width: 450px;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Calendar header styling */
+        .calendar-header {
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        /* Days of the week styling */
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background-color: #007bff;
+            color: white;
+        }
+
+        .calendar-days div {
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Date cells styling */
+        .calendar-dates {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        .calendar-dates div {
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        /* Highlight today */
+        .today {
+            background-color: #ffdd57;
+            font-weight: bold;
+        }
+    </style>
 	</head>
 	<body class="is-preload">
 
@@ -30,52 +80,33 @@
 										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
 									</ul>
 								</header>
-
-							<!-- Banner -->
-								<section id="banner">
-									<div class="content">
-									<header class="main">
-										<h3>Overview</h3>
-									</header>
-										<p>Chartered on 23 February 2021 under Rotary International (District 3150), the Rotary Club of Abhyuday Hyderabad is a dynamic platform of service, fellowship, and community impact. Guided by its motto—<i>“Powered by Purpose & Humanity: Community, Health & Social Impact Together for a Better Tomorrow”</i>—the club blends youthful energy with Rotary’s timeless values to create lasting change.
-
-										<h3>What We Do</h3>
-										<li><b>Environment:</b> Organized impactful lake cleanups at Ameenpur Lake and with Wipro, mobilizing 120+ volunteers and collecting nearly 250 kg of waste, reinforcing our commitment to a cleaner, greener world.</li>
-										<li><b>Youth & Education:</b> Conducted career-guidance sessions, including one at MV Foundation, inspiring young girls with empowerment stories and the transformative power of education.</li>
-										<li><b>Health & Hygiene:</b> Through initiatives like the Swasthya Siksha workshop at Sishuvihar orphanage, we spread awareness about hygiene and wellness, supported by pediatric specialists.</li>
-										<li><b>Leadership & Fellowship:</b> Our members benefit from leadership workshops, board training, and monthly fellowship activities. The 2025–26 roadmap includes adopting schools, launching a global grant, and completing 28 service projects.</li>
-
-										<br><h3>What Makes Us Unique</h3>
-										<li><b>Youthful Spirit, Big Dreams:</b> Established in 2021, Abhyuday brings fresh energy to classic Rotary service.</li>
-										<li><b>Holistic Approach:</b> From eco-drives to education and wellness, we balance service with sustainability.</li>
-										<li><b>Community-Driven:</b> Active Rotarians, Rotaractors, and partners collaborate for real-world impact.</li>
-										<li><b>Hands-On Growth:</b> Vocational visits, such as to HIMSW Ltd, add value through industry learning and leadership exposure.</li><br>
-										Rotary Club of Abhyuday Hyderabad invites individuals who are passionate about service, leadership, and fellowship. Together, we strive to build a healthier, stronger, and more inclusive tomorrow—one initiative at a time.
-										</p>										
-									</div>
-								</section>
 							<!-- Section -->
 								<section>
-									<header class="major">
-										<h3>LEADERS OF OUR CLUB</h3>
+									<header class="main">
+										<h3>Calendar</h3>
 									</header>
-									<div class="features">
-										<article>
-											<span class="icon fa-gem"></span>
-											<div class="content">
-												<h3>Club President</h3>
-												<h4>Padmaja</h4>
-											</div>
-										</article>
-										<article>
-											<span class="icon solid fa-paper-plane"></span>
-											<div class="content">
-												<h3>Club Secretary</h3>
-												<h4>Vinod</h4>
-											</div>
-										</article>
-									</div>
-								</section>
+    <!-- Calendar Container -->
+    <div class="calendar">
+        <!-- Month and Year Header -->
+        <div class="calendar-header">November 2025</div>
+
+        <!-- Days of the Week -->
+        <div class="calendar-days">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+        </div>
+
+        <!-- Calendar Dates -->
+        <div class="calendar-dates">
+            <!-- Blank spaces for days before the month starts on Friday -->
+            <div></div> <div></div> <div></div> <div></div> <div></div> <div class="today">1</div> <div>2</div> <div>3</div> <div>4</div> <div>5</div> <div>6</div> <div>7</div> <div>8</div> <div>9</div> <div>10 <br>Lake Cleanup</br></div> <div>11</div> <div>12</div> <div>13</div> <div>14</div> <div>15</div> <div>16</div> <div>17</div> <div>18</div> <div>19</div><div>20</div> <div>21</div> <div>22</div> <div>23</div> <div>24</div> <div>25</div> <div>26</div><div>27</div> <div>28</div> <div>29</div> <div>30</div> 
+
+								</section>									
 						</div>
 					</div>
 
@@ -140,5 +171,6 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 
-	</body>
+	
+		</body>
 </html>
