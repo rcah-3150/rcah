@@ -10,57 +10,62 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-  <style>
-        /* Calendar container */
-        .calendar {
-            width: 450px;
-            border: 1px solid #ddd;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Calendar header styling */
-        .calendar-header {
-            text-align: center;
-            background-color: #007bff;
-            color: white;
-            padding: 10px;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-
-        /* Days of the week styling */
-        .calendar-days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            background-color: #007bff;
-            color: white;
-        }
-
-        .calendar-days div {
-            padding: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        /* Date cells styling */
-        .calendar-dates {
-            display: grid;            
-			grid-template-columns: repeat(7, 1fr);
-        }
-
-        .calendar-dates div {
-            padding: 20px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        /* Highlight today */
-        .event {
-            background-color: #a8fad5;
-            font-weight: bold;
-        }
-    </style>
 	</head>
+ <style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #fafafa;
+        margin: 20px;
+    }
+    h1 { text-align: center; }
+    .year-calendar {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 20px;
+        max-width: 1200px;
+        margin: auto;
+    }
+    .month {
+        border: 1px solid #ccc;
+        padding: 10px;
+        background: white;
+        border-radius: 6px;
+    }
+    .month h3 {
+        text-align: center;
+        margin: 5px 0;
+    }
+    .weekdays, .days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        font-size: 14px;
+        text-align: center;
+    }
+    .weekdays div { font-weight: bold; }
+    .day {
+        padding: 4px;
+        cursor: pointer;
+        border-radius: 4px;
+        margin: 2px;
+        min-height: 50px;
+        position: relative;
+        font-size: 14px;
+    }
+    .day:hover {
+        background: #eee;
+    }
+    .note-text {
+        display: block;
+        margin-top: 4px;
+        background: #ffffcc;
+        padding: 2px;
+        font-size: 13px;
+        border-radius: 3px;
+    }
+</style>
+</head>
+<body>
+
 	<body class="is-preload">
 
 		<!-- Wrapper -->
@@ -83,32 +88,98 @@
 							<!-- Section -->
 								<section>
 									<header class="main">
-										<h3>Calendar</h3>
+										<h3>Event Calendar</h3>
 									</header>
-    <!-- Calendar Container -->
-    <div class="calendar">
-        <!-- Month and Year Header -->
-        <div class="calendar-header">November 2025</div>
 
-        <!-- Days of the Week -->
-        <div class="calendar-days">
-            <div>Sun</div>
-            <div>Mon</div>
-            <div>Tue</div>
-            <div>Wed</div>
-            <div>Thu</div>
-            <div>Fri</div>
-            <div>Sat</div>
-        </div>
+<div class="year-calendar" id="calendar"></div>
 
-        <!-- Calendar Dates -->
-        <div class="calendar-dates">
-            <!-- Blank spaces for days before the month starts on Friday -->
-            <div></div><div></div><div></div><div></div><div></div><div></div> <div>1</div> <div>2</div> <div>3</div> <div>4</div> <div>5</div> <div>6</div> <div>7</div> <div>8</div> <div>9</div> <div class="event">10 <br><b>Lake Cleanup</b></br></div> <div>11</div> <div>12</div> <div>13</div> <div>14</div> <div>15</div> <div>16</div> <div>17</div> <div>18</div> <div>19</div><div>20</div> <div>21</div> <div>22</div> <div>23</div> <div>24</div> <div>25</div> <div>26</div><div>27</div> <div>28</div> <div>29</div> <div>30</div> 
+<script>
+const calendarContainer = document.getElementById("calendar");
+const year = new Date().getFullYear();
 
-								</section>									
-						</div>
-					</div>
+// Load saved notes (note + color)
+const savedNotes = JSON.parse(localStorage.getItem("calendarNotes") || "{}");
+
+// Utility: generate soft random color
+function randomPastelColor() {
+    const r = Math.floor((Math.random() * 127) + 128);
+    const g = Math.floor((Math.random() * 127) + 128);
+    const b = Math.floor((Math.random() * 127) + 128);
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
+// Generate calendar
+for (let m = 0; m < 12; m++) {
+    const monthDiv = document.createElement("div");
+    monthDiv.classList.add("month");
+
+    const monthName = new Date(year, m).toLocaleString("default", { month: "long" });
+    monthDiv.innerHTML = `<h3>${monthName} ${year}</h3>`;
+
+    const weekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    let html = "<div class='weekdays'>";
+    weekdays.forEach(d => html += `<div>${d}</div>`);
+    html += "</div><div class='days'>";
+
+    const firstDay = new Date(year, m, 1).getDay();
+    const daysInMonth = new Date(year, m + 1, 0).getDate();
+
+    for (let e = 0; e < firstDay; e++) html += "<div></div>";
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const dateId = `${year}-${m+1}-${d}`;
+        const entry = savedNotes[dateId];
+
+        const style = entry?.color ? `style="background:${entry.color}"` : "";
+        const noteHtml = entry?.text ? `<span class="note-text">${entry.text}</span>` : "";
+        const noteClass = entry ? "has-note" : "";
+
+        html += `
+        <div class="day ${noteClass}" data-date="${dateId}" ${style}>
+            <span class="date-number">${d}</span>
+            ${noteHtml}
+        </div>`;
+    }
+
+    html += "</div>";
+    monthDiv.innerHTML += html;
+    calendarContainer.appendChild(monthDiv);
+}
+
+// Add / edit notes
+calendarContainer.addEventListener("click", (e) => {
+    const dayEl = e.target.closest(".day");
+    if (!dayEl) return;
+
+    const date = dayEl.dataset.date;
+    const prev = savedNotes[date]?.text || "";
+
+    const newNote = prompt(`Add/edit note for ${date}:`, prev);
+    if (newNote === null) return;
+
+    if (newNote.trim()) {
+        savedNotes[date] = {
+            text: newNote.trim(),
+            color: savedNotes[date]?.color || randomPastelColor()
+        };
+        dayEl.classList.add("has-note");
+        dayEl.style.background = savedNotes[date].color;
+        dayEl.querySelector(".note-text")?.remove();
+
+        const span = document.createElement("span");
+        span.className = "note-text";
+        span.innerText = newNote.trim();
+        dayEl.appendChild(span);
+    } else {
+        delete savedNotes[date];
+        dayEl.classList.remove("has-note");
+        dayEl.style.background = "";
+        dayEl.querySelector(".note-text")?.remove();
+    }
+
+    localStorage.setItem("calendarNotes", JSON.stringify(savedNotes));
+});
+</script>
 
 				<!-- Sidebar -->
 					<div id="sidebar">
@@ -171,6 +242,5 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 
-	
-		</body>
+</body>
 </html>
